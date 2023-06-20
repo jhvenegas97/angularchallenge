@@ -1,0 +1,29 @@
+.caption-carousel {
+    background-color: #000;
+    color: #fff;
+    font-weight: 500;
+    
+}
+
+.boxShadowCharacter {
+    -webkit-filter: drop-shadow(4px 2px 2px #222);
+    filter: drop-shadow(4px 2px 2px #222);
+    border-radius: 50px;
+}
+
+.boxShadowCaption {
+    border: red 5px solid;
+    border-radius: 15px;
+}
+
+.buttonGoHome {
+    padding: 1rem;
+    border-radius: 5px;
+    width: 100%;
+    outline: none;
+    border: none;
+    background: #df2635;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+  }

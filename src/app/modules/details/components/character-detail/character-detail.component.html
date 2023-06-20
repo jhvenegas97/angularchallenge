@@ -1,0 +1,482 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"
+      ><img src="./assets/icons/Marvel_Logo.png" style="width: 100px" alt=""
+    /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-9 col-md-8 col-sm-12 mt-3">
+      <h1>{{ character[0].name }}</h1>
+      <p>{{ character[0].description }}</p>
+      <p>Last modified: {{ character[0].modified | date : "mediumDate" }}</p>
+      <p
+        *ngFor="let url of character[0].urls; let first = first; let i = index"
+      >
+        <a href="{{ url.url }}" target="_blank">{{ url.type }}</a>
+      </p>
+      <div class="row d-flex justify-content-center">
+        <div class="col-10">
+          <button class="buttonGoHome" (click)="goHome()">
+            Go Home
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-4 col-sm-12 mt-3 text-center">
+      <img
+        class="boxShadowCharacter"
+        src="{{ character[0].thumbnail.path }}/portrait_incredible.{{
+          character[0].thumbnail.extension
+        }}"
+        alt=""
+        loading="lazy"
+      />
+    </div>
+  </div>
+
+  <div class="container p-4">
+    <div class="row">
+      <div *ngIf="comics.length != 0; then thenBlock; else elseBlock"></div>
+      <ng-template #thenBlock>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Comics</h2>
+          <div
+            id="carouselComics"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                [ngClass]="first ? 'active' : ''"
+                *ngFor="let comic of comics; let first = first; let i = index"
+                data-bs-target="#carouselComics"
+                [attr.data-bs-slide-to]="i"
+                aria-current="true"
+                aria-label="Slide i"
+              ></button>
+            </div>
+            <div
+              class="carousel-inner"
+              *ngFor="let comic of comics; let first = first"
+            >
+              <div
+                class="carousel-item"
+                [ngClass]="first ? 'active' : ''"
+                (click)="onItemClick(comic.urls[0].url)"
+              >
+                <div
+                  *ngIf="
+                    comic.images.length != 0;
+                    then thenBlockComicImage;
+                    else elseBlockComicImage
+                  "
+                ></div>
+                <ng-template #thenBlockComicImage>
+                  <img
+                    class="d-block w-100"
+                    src="{{ comic.images[0].path }}/standard_fantastic.{{
+                      comic.thumbnail.extension
+                    }}"
+                    alt=""
+                  />
+                </ng-template>
+                <ng-template #elseBlockComicImage>
+                  <img
+                    class="d-block w-100"
+                    src="./assets/icons/notfound.jpg"
+                    alt=""
+                  />
+                </ng-template>
+
+                <div class="carousel-caption d-none d-md-block">
+                  <p class="caption-carousel boxShadowCaption m-0 pb-2 pt-2">
+                    {{ comic.title }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselComics"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselComics"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #elseBlock>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Comics</h2>
+          <div
+            id="carouselComics"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                class="active"
+                data-bs-target="#carouselComics"
+                ata-bs-slide-to="0"
+                aria-current="true"
+                aria-label="Slide 0"
+              ></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="./assets/icons/notfound.jpg"
+                  alt=""
+                />
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselComics"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselComics"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <div
+        *ngIf="events.length != 0; then thenBlockEvents; else elseBlockEvents"
+      ></div>
+      <ng-template #thenBlockEvents>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Events</h2>
+          <div
+            id="carouselEvents"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                [ngClass]="first ? 'active' : ''"
+                *ngFor="let event of events; let first = first; let i = index"
+                data-bs-target="#carouselEvents"
+                [attr.data-bs-slide-to]="i"
+                aria-current="true"
+                aria-label="Slide i"
+              ></button>
+            </div>
+            <div
+              class="carousel-inner"
+              *ngFor="let event of events; let first = first"
+            >
+              <div
+                class="carousel-item"
+                [ngClass]="first ? 'active' : ''"
+                (click)="onItemClick(event.urls[0].url)"
+              >
+                <div
+                  *ngIf="
+                    event.thumbnail;
+                    then thenBlockEventImage;
+                    else elseBlockEventImage
+                  "
+                ></div>
+                <ng-template #thenBlockEventImage>
+                  <img
+                    class="d-block w-100"
+                    src="{{ event.thumbnail.path }}/standard_fantastic.{{
+                      event.thumbnail.extension
+                    }}"
+                    alt=""
+                  />
+                </ng-template>
+                <ng-template #elseBlockEventImage>
+                  <img
+                    class="d-block w-100"
+                    src="./assets/icons/notfound.jpg"
+                    alt=""
+                  />
+                </ng-template>
+                <div class="carousel-caption d-none d-md-block">
+                  <p class="caption-carousel boxShadowCaption m-0 pb-2 pt-2">
+                    {{ event.title }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselEvents"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselEvents"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #elseBlockEvents>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Events</h2>
+          <div
+            id="carouselEvents"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                class="active"
+                data-bs-target="#carouselEvents"
+                ata-bs-slide-to="0"
+                aria-current="true"
+                aria-label="Slide 0"
+              ></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="./assets/icons/notfound.jpg"
+                  alt=""
+                />
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselEvents"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselEvents"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <div
+        *ngIf="series.length != 0; then thenBlockSeries; else elseBlockSeries"
+      ></div>
+      <ng-template #thenBlockSeries>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Series</h2>
+          <div
+            id="carouselSeries"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                [ngClass]="first ? 'active' : ''"
+                *ngFor="let serie of series; let first = first; let i = index"
+                data-bs-target="#carouselSeries"
+                [attr.data-bs-slide-to]="i"
+                aria-current="true"
+                aria-label="Slide i"
+              ></button>
+            </div>
+            <div
+              class="carousel-inner"
+              *ngFor="let serie of series; let first = first"
+            >
+              <div
+                class="carousel-item"
+                [ngClass]="first ? 'active' : ''"
+                (click)="onItemClick(serie.urls[0].url)"
+              >
+                <div
+                  *ngIf="
+                    serie.thumbnail;
+                    then thenBlockSerieImage;
+                    else elseBlockSerieImage
+                  "
+                ></div>
+                <ng-template #thenBlockSerieImage>
+                  <img
+                    class="d-block w-100"
+                    src="{{ serie.thumbnail.path }}/standard_fantastic.{{
+                      serie.thumbnail.extension
+                    }}"
+                    alt=""
+                  />
+                </ng-template>
+                <ng-template #elseBlockSerieImage>
+                  <img
+                    class="d-block w-100"
+                    src="./assets/icons/notfound.jpg"
+                    alt=""
+                  />
+                </ng-template>
+                <div class="carousel-caption d-none d-md-block">
+                  <p class="caption-carousel boxShadowCaption m-0 pb-2 pt-2">
+                    {{ serie.title }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselSeries"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselSeries"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #elseBlockSeries>
+        <div class="col-md-4 col-sm-12 mt-2">
+          <h2 class="text-center mb-1">Series</h2>
+          <div
+            id="carouselSeries"
+            class="carousel slide boxShadowCharacter"
+            data-bs-ride="false"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                class="active"
+                data-bs-target="#carouselSeries"
+                ata-bs-slide-to="0"
+                aria-current="true"
+                aria-label="Slide 0"
+              ></button>
+            </div>
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img
+                  class="d-block w-100"
+                  src="./assets/icons/notfound.jpg"
+                  alt=""
+                />
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselSeries"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselSeries"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

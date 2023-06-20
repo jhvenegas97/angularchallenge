@@ -1,0 +1,63 @@
+<h1 class="d-flex justify-content-end mt-2 me-2">
+  <button style="border: none; background: none">
+    <img mat-dialog-close src="./assets/icons/btn-close.png" alt="" />
+  </button>
+</h1>
+<div mat-dialog-content class="pt-0">
+  <div class="row m-0">
+    <div class="col-sm-6 col-md-5 p-0 d-flex justify-content-center">
+      <img
+        class="comicPortrait"
+        src="{{ data.comicData.images[0].path }}/portrait_fantastic.{{
+          data.comicData.images[0].extension
+        }}"
+        alt=""
+        loading="lazy"
+      />
+    </div>
+    <div class="col-sm-6 col-md-7 p-0 ps-2">
+      <h4 style="font-weight: 600; color: #000;">{{ data.comicData.title }}</h4>
+      <p style="font-size: 0.8rem">
+        {{ data.comicData.description }}
+      </p>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="row m-0 mt-3">
+    <div class="col-6 p-0 d-grid">
+      <button
+        mat-dialog-close="{{ data.comicData.id }}"
+        class="buttonFavouritesDefault"
+        [ngClass]="{ buttonFavouritesSelected: data.comicFavourite }"
+        cdkFocusInitial
+      >
+        
+        <div *ngIf="data.comicFavourite; then thenBlock; else elseBlock"></div>
+        <ng-template #thenBlock
+          >
+          <img
+          src="./assets/icons/btn-favourites-primary.png"
+          alt=""
+          style="margin: 10px"
+        />ADDED TO FAVOURITES</ng-template
+        >
+        <ng-template #elseBlock
+          ><img
+          src="./assets/icons/btn-favourites-default.png"
+          alt=""
+          style="margin: 10px"
+        />ADD TO FAVOURITES</ng-template
+        >
+      </button>
+    </div>
+    <div class="col-6 p-0 d-grid">
+      <a style="text-decoration: none; color: red" target="_blank" href="{{data.comicPurchaseLink}}">
+        <button class="buttonBuy" mat-dialog-close>
+          <img src="./assets/icons/shopping-cart-primary.png" alt="" /> BUY FOR $
+            {{ data.comicPrice }}
+        </button>
+      </a>
+    </div>
+  </div>
+</div>
